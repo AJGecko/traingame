@@ -14,8 +14,8 @@ init = function()
     movement = function()
       this.bg = this.rot * (PI/180) 
       
-      this.x += this.speed * sin(this.bg)
-      this.y += this.speed * cos(this.bg)
+      this.x += (this.speed+(this.dash*3)) * sin(this.bg)
+      this.y += (this.speed+(this.dash*3)) * cos(this.bg) 
       
       if this.speed * sin(this.bg) != 0 or this.speed * cos(this.bg) then
         fuel -= 0.03125
@@ -43,29 +43,34 @@ end
 update = function()
   // if keyboard.SPACE then train.rot += 1 end
   
-  if keyboard.DOWN then 
-    if train.speed > -train.maxspeed then  
-      if train.speed > 0 then
-        train.speed -= 0.25 
+  if train.fuel > -1 then
+    if keyboard.DOWN then 
+      if train.speed > -train.maxspeed then  
+        if train.speed > 0 then
+          train.speed -= 0.25 
+        else
+          train.speed -= 0.0625
+        end  
       else
-        train.speed -= 0.0625
+        train.speed = -train.maxspeed
       end  
-    else
-      train.speed = -train.maxspeed
     end  
-  end  
-  
-  if keyboard.UP then 
-    if train.speed < train.maxspeed then  
-      if train.speed < 0 then
-        train.speed += 0.25
+    
+    if keyboard.UP then 
+      if train.speed < train.maxspeed then  
+        if train.speed < 0 then
+          train.speed += 0.25
+        else
+          train.speed += 0.0625
+        end  
       else
-        train.speed += 0.0625
+        train.speed = train.maxspeed
       end  
-    else
-      train.speed = train.maxspeed
-    end  
-  end  
+    end
+  else  
+    keyboard.DOWN = 0
+    keyboard.UP = 0
+  end
   
   if abs(train.speed) > 0.05 then
     if keyboard.LEFT then train.rot -= 1.5 end
@@ -80,6 +85,28 @@ update = function()
     end
   end
   
+  if keyboard.press.SPACE and train.dcooldown > 59 then
+    train.dash = 1
+    train.dtime = 20
+    train.dcooldown = 59
+  end
+  
+  
+  if train.dash == 1 then
+    train.dtime -= 1
+    if train.dtime < 1 then
+      train.dash = 0
+    end
+  end
+  
+  if train.dcooldown < 60 then
+    train.dcooldown -= 1
+    if train.dcooldown < 0 then
+      train.dcooldown = 60
+    end
+  end
+  
+  
   // ts = train.speed
    
   train.movement()
@@ -91,6 +118,7 @@ update = function()
   
   ts = train.speed
   
+  map.update()
 end
 
 draw = function()
@@ -98,7 +126,7 @@ draw = function()
   
   screen.setScale(cam.zoom,cam.zoom)
   
-  screen.drawMap( "testmap", 0- cam.x, 0- cam.y, 800, 800 )
+  map.draw()
   
   // train
   screen.setRotation(-train.rot)

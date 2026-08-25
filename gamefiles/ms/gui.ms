@@ -28,6 +28,7 @@ drawspeed = function()
 end
 
 drawgui = function()
+  screen.setScale(1,1)
   drawfuel()
   drawcoins()
   drawspeed()
