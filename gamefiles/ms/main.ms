@@ -34,7 +34,7 @@ init = function()
   
   items.add(-200,40, "fueltank",25)
   
-  for i=0 to 1000
+  for i=0 to 100
     items.add(random.nextInt(1000)-500,random.nextInt(1000)-500,"coin")
   end
   
@@ -48,7 +48,7 @@ update = function()
       if train.speed > 0 then
         train.speed -= 0.25 
       else
-        train.speed -= 0.125
+        train.speed -= 0.0625
       end  
     else
       train.speed = -train.maxspeed
@@ -60,7 +60,7 @@ update = function()
       if train.speed < 0 then
         train.speed += 0.25
       else
-        train.speed += 0.125
+        train.speed += 0.0625
       end  
     else
       train.speed = train.maxspeed
@@ -107,7 +107,7 @@ draw = function()
   
   items.draw()
   
-  screen.drawText("Fuel: " + round(train.fuel),0,80,20,"#fff")
-  screen.drawText("Speed: " + round(train.speed),0,60,20,"#fff")
   
+  
+  drawgui()
 end

@@ -122,8 +122,16 @@ fueltank = class extends item
       else
         train.fuel = train.maxfuel
       end
-      selfdel()
-      print("trainfuel: "+train.fuel)
+      
+      this.wascol = 1
+      this.anioffsetx = random.nextInt(24)-12
+      this.anioffsety = random.nextInt(24)-12
+      
+      this.aftereffect += 1
+      if this.aftereffect > 30 then
+        selfdel()
+      end
+      
     end
       
   end
@@ -134,7 +142,7 @@ fueltank = class extends item
       screen.drawText(this.content,this.x-cam.x+4*this.scale,this.y-cam.y-5.5*this.scale,4*this.scale,"#fff")
     end
     if this.wascol == 1 and this.aftereffect < 30 then
-      screen.drawText("+"+this.content+"F",train.x-cam.x,train.y-cam.y+this.aftereffect/5,10+this.aftereffect/15,"#fff")
+      screen.drawText("+"+this.content+"F",train.x-cam.x+this.anioffsetx,train.y-cam.y+this.anioffsety+this.aftereffect/5,10+this.aftereffect/15,"#fff")
       this.aftereffect += 1
     end
   end
@@ -154,8 +162,13 @@ coin = class extends item
   collected = function()
     if this.wascol != 1 then
       global.coins += 1
-      selfdel()
       this.wascol = 1
+      this.anioffsetx = random.nextInt(24)-12
+      this.anioffsety = random.nextInt(24)-12
+    end
+    this.aftereffect += 1
+    if this.aftereffect > 30 then
+      selfdel()
     end
   end
   
@@ -164,8 +177,7 @@ coin = class extends item
       screen.drawSprite( this.name, this.x-cam.x, this.y-cam.y, 12*this.scale, 12*this.scale)
     end
     if this.wascol == 1 and this.aftereffect < 30 then
-      screen.drawText("+"+1+"C",train.x-cam.x,train.y-cam.y+this.aftereffect/5,10+this.aftereffect/15,"#fff")
-      this.aftereffect += 1
+      screen.drawText("+"+1+"C",train.x-cam.x+this.anioffsetx,train.y-cam.y+this.anioffsety+this.aftereffect/5,10+this.aftereffect/15,"#fff")
     end
   end
   
