@@ -38,6 +38,10 @@ init = function()
     items.add(random.nextInt(1000)-500,random.nextInt(1000)-500,"coin")
   end
   
+  projectiles.add(0,0,"bullet",0)
+  
+  enemys.add(20,-200,"slime",100)
+  
 end
 
 update = function()
@@ -106,6 +110,19 @@ update = function()
     end
   end
   
+  if mouse.press then
+    local dx = mouse.x
+    local dy = mouse.y
+    local angle = atan2(dx,dy)
+    
+    local dir = angle * (180/PI)
+    
+    projectiles.add(train.x,train.y,"bullet",dir)
+    
+    
+    
+  end
+  
   
   // ts = train.speed
    
@@ -115,6 +132,10 @@ update = function()
   cam.y = train.y
   
   items.update()
+  
+  enemys.update()
+  
+  projectiles.update()
   
   ts = train.speed
   
@@ -127,6 +148,10 @@ draw = function()
   screen.setScale(cam.zoom,cam.zoom)
   
   map.draw()
+  
+  enemys.draw()
+  
+  projectiles.draw()
   
   // train
   screen.setRotation(-train.rot)
