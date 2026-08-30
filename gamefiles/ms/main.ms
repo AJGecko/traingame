@@ -1,27 +1,6 @@
 init = function()
-  train = object 
-    x = 0
-    y = 0
-    speed = 0
-    rot = 0
-    scale = 2
-    fuel = 100
-    health = 100
-    maxspeed = 3
-    maxfuel = 100
-    magnet = 0
-    
-    movement = function()
-      this.bg = this.rot * (PI/180) 
-      
-      this.x += (this.speed+(this.dash*3)) * sin(this.bg)
-      this.y += (this.speed+(this.dash*3)) * cos(this.bg) 
-      
-      if this.speed * sin(this.bg) != 0 or this.speed * cos(this.bg) then
-        fuel -= 0.03125
-      end
-    end
-  end
+  
+  train.init()
   
   cam = object
     x = 0
@@ -48,7 +27,7 @@ update = function()
   // if keyboard.SPACE then train.rot += 1 end
   
   if train.fuel > -1 then
-    if keyboard.DOWN then 
+    if keyboard.DOWN and not keyboard.UP then
       if train.speed > -train.maxspeed then  
         if train.speed > 0 then
           train.speed -= 0.25 
@@ -60,7 +39,7 @@ update = function()
       end  
     end  
     
-    if keyboard.UP then 
+    if keyboard.UP and not keyboard.DOWN then 
       if train.speed < train.maxspeed then  
         if train.speed < 0 then
           train.speed += 0.25
@@ -71,14 +50,15 @@ update = function()
         train.speed = train.maxspeed
       end  
     end
+    
   else  
     keyboard.DOWN = 0
     keyboard.UP = 0
   end
   
   if abs(train.speed) > 0.05 then
-    if keyboard.LEFT then train.rot -= 1.5 end
-    if keyboard.RIGHT then train.rot += 1.5 end
+    if keyboard.LEFT and not keyboard.RIGHT then train.rot -= 1.5 end
+    if keyboard.RIGHT and not keyboard.LEFT then train.rot += 1.5 end
   end
   
   if not keyboard.UP and not keyboard.DOWN then
@@ -86,6 +66,7 @@ update = function()
       train.speed = 0
     else
       train.speed *= 0.9
+      
     end
   end
   
@@ -117,7 +98,7 @@ update = function()
     
     local dir = angle * (180/PI)
     
-    projectiles.add(train.x,train.y,"bullet",dir)
+    projectiles.add(train.x,train.y,"bullet",dir,"en")
     
     
     

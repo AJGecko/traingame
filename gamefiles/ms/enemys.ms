@@ -34,6 +34,19 @@ enemy = class
     this.mode = ""
     this.lp = lp
     this.speed = 0.5
+    this.id = "en"
+    sector.set(this.x,this.y,this)
+    this.csec = sector.getmysec(this.x,this.y)
+  end
+  
+  attack = function()
+    if this.atcd < 1 then   
+      projectiles.add(this.x,this.y,"slimeball",this.direction*(180/PI),"train")
+      this.atcd = 90
+    end
+    if atcd > 0 then
+      atcd -= 1
+    end
   end
   
   update = function()
@@ -42,25 +55,36 @@ enemy = class
     local dy = train.y - this.y
     local angle = atan2(dx,dy)
     
-    if this.pause != 1 then  
-      this.direction = angle
+    local distance = sqrt((train.x - this.x)^2 + (train.y - this.y)^2)
+    
+    this.direction = angle
+    
+    if distance > 60 then  
       this.bg = this.direction
       this.x += this.speed * sin(this.bg)
       this.y += this.speed * cos(this.bg)
+    else  
+      this.attack()
     end
-      
-    if random.next() < 0.002 and this.pause == 0 then
+    
+    if this.csec != sector.getmysec(this.x,this.y) then
+      sector.del(this.csec,this)
+      sector.set(this.x,this.y,this)
+      this.csec = sector.getmysec(this.x,this.y)
+    end
+    
+    
+    // maybe for later  
+    /* if random.next() < 0.002 and this.pause == 0 then
       this.pause = 1
-      print("pause")
       this.ptime = 120
     end
     
     if this.ptime > 0 then
       this.ptime -= 1
-      print(this.ptime)
     else
       this.pause = 0
-    end
+    end */
     
   end
   

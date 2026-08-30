@@ -23,8 +23,24 @@ drawcoins = function()
 end
 
 drawspeed = function()
-  screen.drawTextOutline(round(train.speed*20)+"km/h",screen.width/2-36,-screen.height/2+30,20,"rgb(17,17,17)")
-  screen.drawText(round(train.speed*20)+"km/h",screen.width/2-36,-screen.height/2+30,20,"#fff")
+  screen.drawTextOutline(round(train.speed*20)+"km/h",screen.width/2-36,-screen.height/2+40,20,"rgb(17,17,17)")
+  screen.drawText(round(train.speed*20)+"km/h",screen.width/2-36,-screen.height/2+40,20,"#fff")
+end
+
+drawhealth = function()
+  screen.fillRect(screen.width/2-40,-screen.height/2+20,train.maxfuel/1.5+2,14,"rgb(118,118,118)")
+  
+  local color1 = 255-(train.health/train.maxhealth)*255 +","+(train.health/train.maxhealth)*255 +",30)"
+  local color2 = "rgb("
+  local color3 = color2+color1
+  
+  if train.health >= 0 then
+    drhealth = train.health
+  else
+    drhealth = 0
+  end
+  screen.fillRect(screen.width/2-40+(-train.maxhealth/1.5+drhealth/1.5)/2, -screen.height/2+20,drhealth/1.5,12,color3)
+  screen.drawSprite( "heart",screen.width/2-86, -screen.height/2+20, 18, 18)
 end
 
 drawgui = function()
@@ -32,4 +48,5 @@ drawgui = function()
   drawfuel()
   drawcoins()
   drawspeed()
+  drawhealth()
 end
