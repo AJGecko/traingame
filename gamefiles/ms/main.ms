@@ -30,6 +30,16 @@ update = function()
       menu = 3
       mouse.press = 0
     end
+    if train.health < 1 then
+      menu = 4
+      reason = "Your train was destroyed"
+      mouse.press = 0
+    end
+    if train.fuel < 0 then
+      menu = 4
+      reason = "Out of fuel"
+      mouse.press = 0
+    end
   end
   
   if menu == 2 then
@@ -38,11 +48,24 @@ update = function()
       mouse.press = 0
       goal = random.nextInt(800)+50
       kills = 0
+      train.fuel = 100
+      train.health = 100
+      enemys.list = []
+      items.list = []
+      train.speed = 0
     end
   end
   
   
   if menu == 3 then
+    if mouse.press and mouse.left then
+      menu = 2
+      mouse.press = 0
+    end
+  end
+  
+  
+  if menu == 4 then
     if mouse.press and mouse.left then
       menu = 2
       mouse.press = 0
@@ -69,8 +92,7 @@ draw = function()
     drawgui()
     
     screen.drawText(kills+"/"+goal,0,75,20,"#fff")
-    
-     screen.drawText("FPS: "+ system.fps,0,60,20,"#fff")
+    screen.drawText("FPS: "+ system.fps,0,60,20,"#fff")
   end
   
   if menu == 2 then
@@ -91,6 +113,11 @@ draw = function()
     screen.drawText("Click to continue",0,-20,20,"#fff")
   end
   
-  
+  if menu == 4 then
+    map.draw()
+    screen.drawText("Game Over",0,20,26,"#fff")
+    screen.drawText("Click to continue",0,0,20,"#fff")
+    screen.drawText(reason,0,-20,20,"#fff")
+  end
   
 end

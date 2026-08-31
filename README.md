@@ -1,9 +1,16 @@
 # Slime Hunter Express Demo
 
+> Keep in mind that the game is currently just a demo and that item and enemy placement is randomized. This means there can be rounds that are very difficult and others that are very easy.
+
 ## About the Game
 
 You are a **Slime Hunter** in a never ending hunt for blue slimes. The world is completely overrun by them, but all hope is not lost because you have a train and this train is **well equipped**.
 <p>Use that to defeat the slimes and survive for as long as you can!<p>
+
+## Play the Game
+
+* **Live Play:** [Play on microStudio](https://microstudio.io/AJGecko/slimehunterexpress/)
+* **Project Page:** [microStudio Project Overview](https://microstudio.dev/i/AJGecko/slimehunterexpress/)
 
 ## Controls
 
