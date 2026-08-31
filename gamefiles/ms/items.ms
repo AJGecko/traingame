@@ -48,6 +48,10 @@ item = class
     this.distance = sqrt((train.x - this.x)^2 + (train.y - this.y)^2)
     // global.dstest = this.distance
     
+    if this.distance > screen.width/2+100 then 
+      this.selfdel()
+    end
+    
     if this.distance < 60 + train.magnet then
       if train.x < this.x then
         this.x -= 3

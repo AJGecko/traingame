@@ -46,18 +46,23 @@ projectile = class
     
     local csec = sector.get(this.mysec)
     
-    for en in csec
-      if en.id == this.target then
-        
+    if this.target == "en" then
+      for en in enemys.list
         local distance = sqrt((en.x - this.x)^2 + (en.y - this.y)^2)
         if distance < 9 then
-          if this.target != "train" then
-            en.selfdel()
-          elsif this.target == "train" then
-            train.health -= 10
-          end
+          global.kills += 1
+          en.selfdel()
           this.selfdel()
         end
+      end
+    end
+    
+    if this.target == "train" then
+      local en = train
+      local distance = sqrt((en.x - this.x)^2 + (en.y - this.y)^2)
+      if distance < 9 then
+        en.health -= 2
+        this.selfdel()
       end
     end
     

@@ -1,7 +1,34 @@
 map = object
   map = []
   
+  init = function()
+    this.enemychance = 0
+  end
+  
   update = function()
+    rdnum = random.next()  
+    if rdnum < 0.4 + this.enemychance/1000 and enemys.list.length < 150 then
+      local rx = (train.x+random.nextInt(300))*plusormin()
+      local ry = (screen.height+train.y+random.nextInt(100))*plusormin()
+      enemys.add(rx,ry,"slime",100)
+      
+    end
+    
+    if rdnum > 0.008 and items.list.length < 100 then
+      local rx = (train.x+random.nextInt(300))*plusormin()
+      local ry = (screen.height+train.y+random.nextInt(100))*plusormin()
+      items.add(rx,ry,"coin")
+      
+    end
+    
+    if random.nextInt(1000) < 5 then
+      local rx = (train.x+random.nextInt(300))*plusormin()
+      local ry = (screen.height+train.y+random.nextInt(100))*plusormin()
+      items.add(rx,ry,"fueltank",25)
+      
+    end
+    
+    
     this.px = round(round(train.x)/400)
     this.py = round(round(train.y)/400)
   end

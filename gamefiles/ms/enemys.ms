@@ -35,8 +35,8 @@ enemy = class
     this.lp = lp
     this.speed = 0.5
     this.id = "en"
-    sector.set(this.x,this.y,this)
-    this.csec = sector.getmysec(this.x,this.y)
+    //sector.set(this.x,this.y,this)
+    //this.csec = sector.getmysec(this.x,this.y)
   end
   
   attack = function()
@@ -59,6 +59,10 @@ enemy = class
     
     this.direction = angle
     
+    if distance > screen.width/2+300 then 
+      this.selfdel()
+    end
+    
     if distance > 60 then  
       this.bg = this.direction
       this.x += this.speed * sin(this.bg)
@@ -67,11 +71,14 @@ enemy = class
       this.attack()
     end
     
+    /*
     if this.csec != sector.getmysec(this.x,this.y) then
+      print("change: "+sector.getmysec(this.x,this.y))
       sector.del(this.csec,this)
       sector.set(this.x,this.y,this)
       this.csec = sector.getmysec(this.x,this.y)
-    end
+      
+    end */
     
     
     // maybe for later  
@@ -97,6 +104,7 @@ enemy = class
   end
   
   selfdel = function()
+    sector.del(csec,this)
     this.parent.del(this)
   end
   

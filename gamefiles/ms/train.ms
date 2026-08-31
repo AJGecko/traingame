@@ -17,6 +17,12 @@ train = object
     csec = sector.getmysec(this.x,this.y)
   end
   
+  draw = function()
+    screen.setRotation(-train.rot)
+    screen.drawSprite( "train", train.x - cam.x, train.y  - cam.y, 12*train.scale, 32*train.scale )
+    screen.setRotation(0)
+  end
+  
   movement = function()
     this.bg = this.rot * (PI/180) 
     this.x += (this.speed+(this.dash*3)) * sin(this.bg)
@@ -31,8 +37,6 @@ train = object
       sector.del(this.csec,this)
       sector.set(this.x,this.y,this)
       this.csec = sector.getmysec(this.x,this.y)
-      print(this.csec)
-      print(sector.get(this.x,this.y))
     end
   end
 end

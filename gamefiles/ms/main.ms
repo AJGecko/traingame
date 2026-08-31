@@ -2,146 +2,95 @@ init = function()
   
   train.init()
   
+  map.init()
+  
   cam = object
     x = 0
     y = 0
     zoom = 1
   end
   
-  
-  
-  
-  items.add(-200,40, "fueltank",25)
-  
-  for i=0 to 100
-    items.add(random.nextInt(1000)-500,random.nextInt(1000)-500,"coin")
-  end
-  
-  projectiles.add(0,0,"bullet",0)
-  
-  enemys.add(20,-200,"slime",100)
+  menu = 2
   
 end
 
 update = function()
-  // if keyboard.SPACE then train.rot += 1 end
   
-  if train.fuel > -1 then
-    if keyboard.DOWN and not keyboard.UP then
-      if train.speed > -train.maxspeed then  
-        if train.speed > 0 then
-          train.speed -= 0.25 
-        else
-          train.speed -= 0.0625
-        end  
-      else
-        train.speed = -train.maxspeed
-      end  
-    end  
-    
-    if keyboard.UP and not keyboard.DOWN then 
-      if train.speed < train.maxspeed then  
-        if train.speed < 0 then
-          train.speed += 0.25
-        else
-          train.speed += 0.0625
-        end  
-      else
-        train.speed = train.maxspeed
-      end  
-    end
-    
-  else  
-    keyboard.DOWN = 0
-    keyboard.UP = 0
-  end
-  
-  if abs(train.speed) > 0.05 then
-    if keyboard.LEFT and not keyboard.RIGHT then train.rot -= 1.5 end
-    if keyboard.RIGHT and not keyboard.LEFT then train.rot += 1.5 end
-  end
-  
-  if not keyboard.UP and not keyboard.DOWN then
-    if abs(train.speed) < 0.01 then
-      train.speed = 0
-    else
-      train.speed *= 0.9
-      
+  if menu == 1 then
+    steering()
+    train.movement()
+    cam.x = train.x
+    cam.y = train.y
+    items.update()
+    enemys.update()
+    projectiles.update()
+    map.update()
+    train.maxspeed = 3 + coins/400
+    if kills >= goal and kills != 0 then
+      menu = 3
+      mouse.press = 0
     end
   end
   
-  if keyboard.press.SPACE and train.dcooldown > 59 then
-    train.dash = 1
-    train.dtime = 20
-    train.dcooldown = 59
-  end
-  
-  
-  if train.dash == 1 then
-    train.dtime -= 1
-    if train.dtime < 1 then
-      train.dash = 0
+  if menu == 2 then
+    if mouse.press and mouse.left then
+      menu = 1
+      mouse.press = 0
+      goal = random.nextInt(800)+50
+      kills = 0
     end
   end
   
-  if train.dcooldown < 60 then
-    train.dcooldown -= 1
-    if train.dcooldown < 0 then
-      train.dcooldown = 60
+  
+  if menu == 3 then
+    if mouse.press and mouse.left then
+      menu = 2
+      mouse.press = 0
     end
   end
   
-  if mouse.press then
-    local dx = mouse.x
-    local dy = mouse.y
-    local angle = atan2(dx,dy)
-    
-    local dir = angle * (180/PI)
-    
-    projectiles.add(train.x,train.y,"bullet",dir,"en")
-    
-    
-    
-  end
-  
-  
-  // ts = train.speed
-   
-  train.movement()
-  
-  cam.x = train.x
-  cam.y = train.y
-  
-  items.update()
-  
-  enemys.update()
-  
-  projectiles.update()
-  
-  ts = train.speed
-  
-  map.update()
 end
 
 draw = function()
   screen.clear("rgb(16,147,16)")
-  
   screen.setScale(cam.zoom,cam.zoom)
   
-  map.draw()
+  if menu == 1 then
+    map.draw()
+    
+    enemys.draw()
+    
+    projectiles.draw()
+    
+    train.draw()
+    
+    items.draw()
+    
+    drawgui()
+    
+    screen.drawText(kills+"/"+goal,0,75,20,"#fff")
+    
+     screen.drawText("FPS: "+ system.fps,0,60,20,"#fff")
+  end
   
-  enemys.draw()
+  if menu == 2 then
+    map.draw()
+    train.draw()
+    screen.drawText("Slime Hunter Express",0,60,26,"#fff")
+    screen.setTranslation(110,50)
+    screen.setRotation(30)
+    screen.drawText("Demo",0,0,18,"rgb(0,85,255)")
+    screen.setRotation(0)
+    screen.setTranslation(0,0)
+    screen.drawText("Click to start",0,-60,20,"#fff")
+  end
   
-  projectiles.draw()
-  
-  // train
-  screen.setRotation(-train.rot)
-  screen.drawSprite( "train", train.x - cam.x, train.y  - cam.y, 12*train.scale, 32*train.scale )
-  screen.setRotation(0)
-  
-  items.draw()
+  if menu == 3 then
+    map.draw()
+    screen.drawText("You did it! :)",0,0,26,"#fff")
+    screen.drawText("Click to continue",0,-20,20,"#fff")
+  end
   
   
   
-  drawgui()
 end
