@@ -56,7 +56,7 @@ Your opponents are slimes. As soon as they get close to you, they start shooting
 
 ## How to Run / Open the Project
 
-1. Go to the **Releases** tab on GitHub and download the latest `.zip` archive of the project. (available in the future)
+1. Go to the **Releases** tab on GitHub and download the latest `.zip` archive of the project.
 2. Open [microStudio](https://microstudio.dev/) and go to the create tab.
 3. Import the downloaded `.zip` file.
 4. Hit **Run** to play and experiment with the code!
